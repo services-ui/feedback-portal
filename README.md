@@ -26,9 +26,9 @@ Try the failure paths with `MOCK_MODE=fail`, `MOCK_MODE=network` or `MOCK_DELAY_
 
 ## Deploy on Vercel
 
-The repo is ready for Vercel with no extra setup. [`vercel.json`](vercel.json) builds `app/` and serves `app/dist`. It also adds long-lived caching for hashed assets and security headers (CSP, nosniff, no framing).
+The Vercel config is [`app/vercel.json`](app/vercel.json). It runs a Vite build on Node 22 and serves `dist`. It also adds long-lived caching for hashed assets and security headers (CSP, nosniff, no framing).
 
-1. Go to Vercel → **Add New → Project** and import this GitHub repo. Leave every setting at its default; `vercel.json` handles them.
+1. Go to Vercel → **Add New → Project** and import this GitHub repo. Set **Root Directory = `app`** and leave every other setting at its default.
 2. Click **Deploy**. The site goes live straight away.
    Until the backend is connected, the journey works end to end, but **Submit** shows *"The feedback service isn't connected yet"*. Nothing pretends to succeed.
 3. **Connecting the backend later:**
@@ -37,7 +37,7 @@ The repo is ready for Vercel with no extra setup. [`vercel.json`](vercel.json) b
    3. Add `VITE_FEEDBACK_ENDPOINT` = your `/exec` URL (for Production and Preview).
    4. Open **Deployments → ⋯ → Redeploy**. Vite reads the variable at build time, so you need to redeploy.
 
-> The CSP already allows `script.google.com` and `script.googleusercontent.com`. If you ever move the backend somewhere else, add that domain to `connect-src` in `vercel.json`.
+> The CSP already allows `script.google.com` and `script.googleusercontent.com`. If you ever move the backend somewhere else, add that domain to `connect-src` in `app/vercel.json`.
 
 ## Tests
 
