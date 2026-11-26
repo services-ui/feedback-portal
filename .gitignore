@@ -1,0 +1,21 @@
+# Dependencies & builds
+node_modules/
+dist/
+.vercel/
+
+# Local env — the endpoint goes in Vercel → Settings → Environment Variables
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
+
+# Local AI-assistant tooling (not part of the product)
+.claude/
+.agents/
+skills-lock.json

@@ -1,0 +1,203 @@
+@import "tailwindcss";
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource-variable/playfair-display/wght.css";
+@import "@fontsource-variable/playfair-display/wght-italic.css";
+
+/* ───────────────────────── Design tokens ─────────────────────────
+   Derived from fintness.in: Geist + Playfair Display, #0066FF primary,
+   #00B2FF accent, #0B1526 ink, #E9EFF8 mist. Navy #15355C is sampled
+   from the logo mark. */
+@theme {
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji";
+  --font-display: "Playfair Display Variable", Georgia, "Times New Roman", serif;
+
+  --color-ink: #0b1526;
+  --color-navy: #15355c;
+  --color-brand: #0066ff;
+  --color-brand-deep: #0052cc;
+  --color-sky: #00b2ff;
+  --color-mist: #e9eff8;
+  --color-cloud: #f5f8fc;
+  --color-slate: #5a6578;
+  --color-hush: #8a94a6;
+  --color-line: rgb(11 21 38 / 0.08);
+  --color-danger: #d92d20;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.9) inset, 0 1px 2px rgb(11 21 38 / 0.04),
+    0 12px 40px -12px rgb(21 53 92 / 0.18);
+  --shadow-cta: 0 1px 0 rgb(255 255 255 / 0.25) inset, 0 8px 24px -8px rgb(0 102 255 / 0.55);
+}
+
+/* ───────────────────────── Platform baseline (mobile-native) ───────────────────────── */
+html {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  overscroll-behavior-y: none; /* no accidental pull-to-refresh mid-feedback */
+  background: var(--color-cloud);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100dvh;
+}
+
+input,
+textarea,
+select {
+  font-size: 16px; /* stops iOS zoom-on-focus */
+}
+
+button,
+a,
+[role="button"],
+[role="radio"],
+[role="checkbox"] {
+  touch-action: manipulation;
+}
+
+button,
+[role="button"],
+[role="radio"],
+[role="checkbox"] {
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+::selection {
+  background: rgb(0 102 255 / 0.16);
+}
+
+/* In the base layer so utilities like `outline-none` can override it */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+  }
+}
+
+.emoji-glyph {
+  font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  line-height: 1;
+}
+
+/* ───────────────────────── Ambient background ─────────────────────────
+   Radial gradients (no filter: blur) drifting on transform only, so it
+   stays on the compositor on mid-range Android. */
+.ambient-blob {
+  position: absolute;
+  border-radius: 9999px;
+  will-change: transform;
+  animation: drift var(--dur, 28s) var(--ease-in-out) infinite alternate;
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(var(--dx, 4%), var(--dy, -3%), 0) scale(1.06);
+  }
+  100% {
+    transform: translate3d(calc(var(--dx, 4%) * -0.6), calc(var(--dy, -3%) * -0.8), 0) scale(0.97);
+  }
+}
+
+.float-shape {
+  position: absolute;
+  animation: float var(--dur, 14s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes float {
+  from {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(var(--fx, 10px), var(--fy, -24px), 0) rotate(var(--fr, 18deg));
+  }
+}
+
+/* Rotating ring for the submission loader */
+.spin-ring {
+  animation: spin 1.1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Shimmer on the active progress segment */
+.progress-shimmer {
+  background-image: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgb(255 255 255 / 0.55) 45%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.4s linear infinite;
+}
+@keyframes shimmer {
+  from {
+    background-position: 150% 0;
+  }
+  to {
+    background-position: -50% 0;
+  }
+}
+
+/* ───────────────────────── Press feedback (all inputs) ───────────────────────── */
+.pressable {
+  transition:
+    transform 160ms var(--ease-out),
+    background-color 200ms ease,
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    color 200ms ease;
+}
+.pressable:active {
+  transform: scale(0.97);
+}
+
+/* Hover only where hover is real — no sticky hovers after taps */
+@media (hover: hover) and (pointer: fine) {
+  .cta-arrow-host:hover .cta-arrow {
+    transform: translateX(3px);
+  }
+  .lift-on-hover:hover {
+    transform: translateY(-1px);
+  }
+}
+.cta-arrow {
+  transition: transform 200ms var(--ease-out);
+}
+
+/* Auto-growing textarea where supported */
+.autogrow {
+  field-sizing: content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-blob,
+  .float-shape,
+  .progress-shimmer {
+    animation: none;
+  }
+  .spin-ring {
+    animation-duration: 2.4s;
+  }
+  .pressable:active {
+    transform: none;
+  }
+}
