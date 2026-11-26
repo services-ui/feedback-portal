@@ -6,8 +6,8 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "npm run build --prefix app",
-    "dev": "npm run dev --prefix app",
+    "build": "cd app && npm run build",
+    "dev": "cd app && npm run dev",
     "mock:api": "node backend/test/mock-server.mjs",
     "test:backend": "node --test backend/test/"
   }
