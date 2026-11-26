@@ -1,0 +1,14 @@
+{
+  "name": "fintness-feedback-portal",
+  "private": true,
+  "description": "Fintness Finserv client feedback portal. The app lives in app/, the Apps Script backend in backend/.",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "npm run build --prefix app",
+    "dev": "npm run dev --prefix app",
+    "mock:api": "node backend/test/mock-server.mjs",
+    "test:backend": "node --test backend/test/"
+  }
+}
